@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gym Trainer Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app-container">
+        <!-- Splash Screen -->
+        <div id="view-splash" class="view active">
+            <div class="content-centered">
+                <h1 class="logo-title">GYM TRAINER <span class="accent">PRO</span></h1>
+                <p class="tagline">Next Gen Fitness Routine</p>
+                <div class="qr-container">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=GymTrainerPro&color=39FF14&bgcolor=121212" alt="App QR Code" class="qr-code">
+                    <p class="qr-text">Scan to Share & Download</p>
+                </div>
+                <button class="btn btn-primary animate-pulse" onclick="app.navigate('login')">Get Started</button>
+            </div>
+        </div>
+
+        <!-- Login Screen -->
+        <div id="view-login" class="view">
+            <div class="content-centered">
+                <h2 class="section-title">Select Your Role</h2>
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="app.login('member')">Login as Member</button>
+                    <button class="btn btn-outline" onclick="app.login('owner')">Login as Owner</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Onboarding Screen -->
+        <div id="view-onboarding" class="view">
+            <div class="form-container">
+                <h2 class="section-title">Welcome! Let's set up your profile.</h2>
+                <div class="input-group">
+                    <label for="member-name">Full Name</label>
+                    <input type="text" id="member-name" placeholder="E.g. Prakash" required>
+                </div>
+                <div class="input-group">
+                    <label for="member-dob">Date of Birth</label>
+                    <input type="date" id="member-dob" required>
+                </div>
+                <button class="btn btn-primary" onclick="app.saveProfile()">Save & Continue</button>
+            </div>
+        </div>
+
+        <!-- Member Dashboard -->
+        <div id="view-member-dashboard" class="view">
+            <header class="app-header">
+                <h2>Hello, <span id="member-display-name" class="accent">Member</span></h2>
+                <button class="btn-icon" onclick="app.logout()">🚪</button>
+            </header>
+            
+            <div id="attendance-prompt" class="card attendance-card hidden">
+                <h3>Attendance Check</h3>
+                <p>Today is <span id="current-day" class="accent"></span>, are you present?</p>
+                <div class="button-group row">
+                    <button class="btn btn-primary small" onclick="app.markAttendance(true)">Yes, Present</button>
+                    <button class="btn btn-outline small" onclick="app.markAttendance(false)">No</button>
+                </div>
+            </div>
+
+            <div class="search-section">
+                <input type="text" id="workout-search" placeholder="Search workout (e.g. 'leg', 'chest')..." oninput="app.searchWorkouts()">
+            </div>
+
+            <div id="search-results" class="results-container">
+                <!-- Results injection -->
+                <div class="placeholder-text">Search for a workout to see available machines.</div>
+            </div>
+        </div>
+
+        <!-- Owner Dashboard -->
+        <div id="view-owner-dashboard" class="view">
+            <header class="app-header">
+                <h2><span class="accent">Owner</span> Dashboard</h2>
+                <button class="btn-icon" onclick="app.logout()">🚪</button>
+            </header>
+
+            <div class="dashboard-tabs">
+                <button class="tab active" onclick="app.switchOwnerTab('attendance')">Attendance</button>
+                <button class="tab" onclick="app.switchOwnerTab('machines')">Machines</button>
+            </div>
+
+            <div id="tab-attendance" class="tab-content active">
+                <h3 class="subsection-title">Daily Attendance Reports</h3>
+                <div id="attendance-list" class="list-container">
+                    <!-- Attendance items -->
+                </div>
+            </div>
+
+            <div id="tab-machines" class="tab-content">
+                <div class="flex-between">
+                    <h3 class="subsection-title">Gym Machines</h3>
+                    <button class="btn-icon add-btn" onclick="app.openAddMachineModal()">➕</button>
+                </div>
+                <div id="machine-list" class="list-container">
+                    <!-- Machine items -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Machine Modal -->
+        <div id="modal-add-machine" class="modal hidden">
+            <div class="modal-content">
+                <h3>Add New Machine</h3>
+                <div class="input-group">
+                    <label>Machine Name (e.g., Leg Press)</label>
+                    <input type="text" id="new-machine-name">
+                </div>
+                <div class="input-group">
+                    <label>Target Muscle Group (e.g., legs)</label>
+                    <input type="text" id="new-machine-group">
+                </div>
+                <div class="button-group row">
+                    <button class="btn btn-primary" onclick="app.addMachine()">Add</button>
+                    <button class="btn btn-outline" onclick="app.closeAddMachineModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="toast hidden"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
